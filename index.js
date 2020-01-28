@@ -29,9 +29,9 @@ exports.handler = function(event, context, callback) {
     .set(headers)
     .end((err, res) => {
       if (err) {
-        console.log('error', err);
+        return callback(err);
       } else {
-        console.log('success', res);
+        return callback(res);
       }
     });
 };
