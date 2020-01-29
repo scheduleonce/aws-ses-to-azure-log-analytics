@@ -30,8 +30,7 @@ exports.handler = function(event, context, callback) {
     .end((err, res) => {
       if (err) {
         return callback(err);
-      } else {
-        return callback(res);
       }
+      return callback(res);
     });
 };
