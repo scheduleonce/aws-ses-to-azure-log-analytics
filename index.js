@@ -8,7 +8,6 @@ const apiVersion = process.env.APIVERSION;
 const processingDate = new Date().toUTCString();
 
 exports.handler = async (event, context) => {
-  return new Promise(async (resolve, reject) => {
     const payload = event.Records[0].Sns;
     const index = `${prefix}`;
     const contentLength = Buffer.byteLength(JSON.stringify(payload), 'utf8');
@@ -22,25 +21,24 @@ exports.handler = async (event, context) => {
       "x-ms-date": processingDate
     };
 
-    await request
-      .post(`https://${workspaceId}.ods.opinsights.azure.com/api/logs?api-version=${apiVersion}`)
-      .send(payload)
-      .set(headers)
-      .end((err, res) => {
-        if (err) {
-          reject({
-            'statusCode': err.statusCode,
-            'body': JSON.stringify({
-              message: err,
-            })
-          });
-        }
-        resolve({
-          'statusCode': res.statusCode,
-          'body': JSON.stringify({
-            message: res,
-          })
-        });
-      });
-  });
+    try {
+      let res = await request
+        .post(`https://${workspaceId}.ods.opinsights.azure.com/api/logs?api-version=${apiVersion}`)
+        .send(payload)
+        .set(headers);
+      return {
+        'statusCode': res.statusCode,
+        'body': JSON.stringify({
+          message: res,
+        })
+      };
+    }
+    catch (err) {
+      return {
+        'statusCode': err.statusCode,
+        'body': JSON.stringify({
+          message: err,
+        })
+      };
+    }
 };
