@@ -26,6 +26,7 @@ exports.handler = async (event, context) => {
         .post(`https://${workspaceId}.ods.opinsights.azure.com/api/logs?api-version=${apiVersion}`)
         .send(payload)
         .set(headers);
+      console.log('response data :' + JSON.stringify(res));
       return {
         'statusCode': res.statusCode,
         'body': JSON.stringify({
@@ -34,6 +35,7 @@ exports.handler = async (event, context) => {
       };
     }
     catch (err) {
+      console.log('error data :' + JSON.stringify(err));
       return {
         'statusCode': err.statusCode,
         'body': JSON.stringify({
