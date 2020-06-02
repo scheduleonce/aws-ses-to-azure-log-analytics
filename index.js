@@ -5,9 +5,9 @@ const workspaceId = process.env.WORKSPACEID;
 const sharedKey = process.env.SHAREDKEY;
 const apiVersion = process.env.APIVERSION;
 
-const processingDate = new Date().toUTCString();
 
 exports.handler = async (event, context) => {
+    const processingDate = new Date().toUTCString();
     const payload = event.Records[0].Sns;
     const index = `${prefix}`;
     const contentLength = Buffer.byteLength(JSON.stringify(payload), 'utf8');
