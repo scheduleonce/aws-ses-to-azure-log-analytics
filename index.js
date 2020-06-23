@@ -21,26 +21,10 @@ exports.handler = async (event, context) => {
       "x-ms-date": processingDate
     };
 
-    try {
-      let res = await request
+    let response = await request
         .post(`https://${workspaceId}.ods.opinsights.azure.com/api/logs?api-version=${apiVersion}`)
         .send(payload)
         .set(headers);
-      console.log('response data :' + JSON.stringify(res));
-      return {
-        'statusCode': res.statusCode,
-        'body': JSON.stringify({
-          message: res,
-        })
-      };
-    }
-    catch (err) {
-      console.log('error data :' + JSON.stringify(err));
-      return {
-        'statusCode': err.statusCode,
-        'body': JSON.stringify({
-          message: err,
-        })
-      };
-    }
+
+    return response;
 };
